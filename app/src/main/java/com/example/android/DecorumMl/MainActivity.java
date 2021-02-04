@@ -1,14 +1,8 @@
-package com.example.android.firstmlapp;
+package com.example.android.DecorumMl;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraManager;
-import android.media.Image;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -20,8 +14,6 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.SparseIntArray;
-import android.view.Surface;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -34,17 +26,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 import com.google.firebase.ml.vision.label.FirebaseVisionLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionLabelDetector;
-import com.google.firebase.ml.vision.label.FirebaseVisionLabelDetectorOptions;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -194,5 +180,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         firebaseVisionLabels.clear();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Context ctx=this; // or you can replace **'this'** with your **ActivityName.this**
+        Intent i = ctx.getPackageManager().getLaunchIntentForPackage("com.example.android.DecorumMl");
+        ctx.startActivity(i);
     }
 }

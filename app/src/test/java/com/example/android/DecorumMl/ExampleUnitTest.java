@@ -1,4 +1,4 @@
-package com.example.android.firstmlapp;
+package com.example.android.DecorumMl;
 
 import org.junit.Test;
 

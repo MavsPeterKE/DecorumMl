@@ -1,4 +1,4 @@
-package com.example.android.firstmlapp;
+package com.example.android.DecorumMl;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
