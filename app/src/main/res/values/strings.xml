@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Decorum Detect Image</string>
+    <string name="title_home">Home</string>
+    <string name="my_deco">Category</string>
 </resources>

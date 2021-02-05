@@ -23,6 +23,7 @@
                 android:value="label"/>
 
         </activity>
+        <activity android:name=".RecommendationActivity"></activity>
     </application>
 
 </manifest>

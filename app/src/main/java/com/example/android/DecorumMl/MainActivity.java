@@ -1,6 +1,7 @@
 package com.example.android.DecorumMl;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -8,6 +9,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.DecorumMl.adapters.MainAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -30,7 +33,9 @@ import com.google.firebase.ml.vision.label.FirebaseVisionLabel;
 import com.google.firebase.ml.vision.label.FirebaseVisionLabelDetector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -96,6 +101,25 @@ public class MainActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
 
+
+    }
+
+    public void getSelectedItem(FirebaseVisionLabel visionLabel,int pos){
+        //showSuccessDialogue(visionLabel);
+    }
+
+    private void showSuccessDialogue(String msg) {
+        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle("Successfully Detected");
+        alertDialog.setMessage(msg);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "View Recommended Items",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        startActivity(new Intent(MainActivity.this,RecommendationActivity.class));
+                    }
+                });
+        alertDialog.show();
     }
 
     private void dispatchTakePictureIntent() {
@@ -136,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                                         // Task completed successfully
                                         // ...
                                         detectButton.setEnabled(false);
+                                        getDetectedImages(labels.get(0).getLabel(),labels.get(1).getLabel());
                                         for (FirebaseVisionLabel label: labels) {
                                             String text = label.getLabel();
                                             String entityId = label.getEntityId();
@@ -145,10 +170,9 @@ public class MainActivity extends AppCompatActivity {
 
                                          //   textTextView.setText(text);
                                            // confidenceTextView.setText(String.valueOf(confidence));
-                                            mainAdapter = new MainAdapter(getApplicationContext(), firebaseVisionLabels);
+
+                                            mainAdapter = new MainAdapter(MainActivity.this, firebaseVisionLabels);
                                             recyclerView.setAdapter(mainAdapter);
-
-
 
                                         }
                                     }
@@ -164,6 +188,57 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 });
 
+
+    }
+
+    private String getDetectedImages(String item1, String item2){
+        String result = "No Category Found for Product";
+        String resul2 = "No Category Found for Product";
+        HashMap<String,List<String>> categories = new HashMap<>();
+        List<String> kitchen = new ArrayList<>();
+        kitchen.add("cup");
+        kitchen.add("Spoon");
+        kitchen.add("juice");
+        kitchen.add("Sufuria");
+        categories.put("kitchen ",kitchen);
+        Log.e( "getDetectedImages: ", item1 + " "+item2 );
+
+        List<String> bedroom = new ArrayList<>();
+        bedroom.add("stand");
+        bedroom.add("bed");
+        bedroom.add("matress");
+        bedroom.add("net");
+        categories.put("Bedroom ",bedroom);
+
+        List<String> sitting_room = new ArrayList<>();
+        sitting_room.add("flower pot");
+        sitting_room.add("table");
+        sitting_room.add("mobile phone");
+        sitting_room.add("tv");
+        sitting_room.add("tableware");
+        sitting_room.add("radio");
+        sitting_room.add("couch");
+        sitting_room.add("chair");
+        sitting_room.add("room");
+        sitting_room.add("curtain");
+        categories.put("Sitting Room",sitting_room);
+
+        //Loop through to check
+        for (Map.Entry<String, List<String>> entry: categories.entrySet()){
+            for (String catItem:entry.getValue()){
+                if (item1.equalsIgnoreCase(catItem)){
+                    result =  entry.getKey() + " Item";
+                }if (item2.equalsIgnoreCase(catItem)){
+                    resul2 = entry.getKey() + " Item";
+                }
+            }
+        }
+        String finalMsg1 = result.contains("No Category")?"":result;
+        String finalMsg2 = resul2.contains("No Category")?"":resul2;
+        String concat = finalMsg2.equals("")?" ":" And ";
+        String msg = finalMsg1.contains(finalMsg2)? finalMsg1 :finalMsg1 + concat +finalMsg2;
+        showSuccessDialogue(msg);
+        return msg ;
 
     }
 
@@ -186,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         Context ctx=this; // or you can replace **'this'** with your **ActivityName.this**
-        Intent i = ctx.getPackageManager().getLaunchIntentForPackage("com.example.android.DecorumMl");
+        Intent i = ctx.getPackageManager().getLaunchIntentForPackage("com.rapid.Decorum");
         ctx.startActivity(i);
     }
 }

@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.example.android.firstmlapp"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -29,5 +29,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-ml-vision:15.0.0'
     implementation 'com.google.firebase:firebase-ml-vision-image-label-model:15.0.0'
+    //textview font
+    implementation 'com.ctrlplusz.anytextview:library:1.2'
 }
 apply plugin: 'com.google.gms.google-services'

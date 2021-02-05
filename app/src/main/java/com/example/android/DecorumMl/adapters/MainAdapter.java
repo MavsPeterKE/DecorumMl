@@ -1,4 +1,4 @@
-package com.example.android.DecorumMl;
+package com.example.android.DecorumMl.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.android.DecorumMl.MainActivity;
+import com.example.android.DecorumMl.R;
 import com.google.firebase.ml.vision.label.FirebaseVisionLabel;
 
 import java.util.List;
@@ -71,6 +73,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MyViewHolder> 
             super(itemView);
             textTextView = itemView.findViewById(R.id.text);
             confidenceTextView = itemView.findViewById(R.id.confidence);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FirebaseVisionLabel firebaseVisionLabel = firebaseVisionLabels.get(getAdapterPosition());
+                    ((MainActivity)context).getSelectedItem(firebaseVisionLabel,getAdapterPosition());
+                }
+            });
         }
     }
 
